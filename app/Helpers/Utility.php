@@ -22,7 +22,7 @@ class Utility
         ], 400);
     }
 
-    public static function validationResponse(Validator $validator): \Illuminate\Http\JsonResponse
+    public static function validationResponse($validator): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'message' => $validator->errors()->first(),

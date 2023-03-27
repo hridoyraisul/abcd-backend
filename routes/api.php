@@ -11,18 +11,22 @@ use Illuminate\Support\Facades\Route;
 | USER Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register USER routes for your application.
+| User Login, Register, Logout Routes
 |
 */
 
+Route::get('allUsers', [UserController::class, 'allUsers']);
+Route::delete('deleteUser/{user}', [UserController::class, 'deleteUser']);
+Route::put('updateUser/{user}', [UserController::class, 'updateUser']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
+//    Route::get('allUsers', [UserController::class, 'allUsers']);
     Route::post('userLogout', [UserController::class, 'userLogout']);
-    Route::post('userRegister', [UserController::class, 'userRegister']);
 });
+Route::post('userRegister', [UserController::class, 'userRegister']);
 Route::post('userLogin', [UserController::class, 'userLogin']);
 
 
@@ -31,7 +35,7 @@ Route::post('userLogin', [UserController::class, 'userLogin']);
 | STUDENTS Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register USER routes for your application.
+| Student CRUD Routes
 |
 */
 
@@ -49,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
 | ATTENDANCE Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register USER routes for your application.
+| Student Attendance Routes
 |
 */
 

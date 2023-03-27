@@ -52,7 +52,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required|email|unique:users',
-                'password' => 'required',
+                'password' => 'required|min:6',
             ]);
             if ($validator->fails()) {
                 return Utility::validationResponse($validator);
@@ -63,6 +63,44 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
             $user->save();
             return Utility::successResponse('User Register Successfully', $user);
+        } catch (\Exception $e) {
+            return Utility::exceptionResponse($e);
+        }
+    }
+
+    public function allUsers(){
+        try {
+            $users = User::query()->paginate(10);
+            return Utility::successResponse('All Users', $users);
+        } catch (\Exception $e) {
+            return Utility::exceptionResponse($e);
+        }
+    }
+
+    public function deleteUser(User $user){
+        try {
+            $user->delete();
+            return Utility::successResponse('User Deleted Successfully');
+        } catch (\Exception $e) {
+            return Utility::exceptionResponse($e);
+        }
+    }
+
+    public function updateUser(User $user, Request $request){
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'password' => 'required|min:6',
+            ]);
+            if ($validator->fails()) {
+                return Utility::validationResponse($validator);
+            }
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->save();
+            return Utility::successResponse('User Updated Successfully', $user);
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
         }
