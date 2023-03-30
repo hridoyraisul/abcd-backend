@@ -21,15 +21,13 @@ class UserController extends Controller
             }
             $credentials = $request->only('email', 'password');
             if (!auth()->attempt($credentials)) {
-                return Utility::errorResponse('Unauthorized');
+                return Utility::errorResponse('Invalid Credentials');
             }
             $user = auth()->user();
-            $tokenResult = $user->createToken('Personal Access Token');
+            $token = $user->createToken('user')->plainTextToken;
             return Utility::successResponse('User Login Successfully', [
-                'access_token' => $tokenResult->accessToken,
-                'token_type' => 'Bearer',
-                'expires_at' => $tokenResult->token->expires_at,
-                'user' => $user,
+                'token' => $token,
+                'user' => $user->only('id', 'name', 'email')
             ]);
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
@@ -79,8 +77,9 @@ class UserController extends Controller
 
     public function deleteUser(User $user){
         try {
+            $name = $user->name;
             $user->delete();
-            return Utility::successResponse('User Deleted Successfully');
+            return Utility::successResponse($name.'\'s information removed successfully');
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
         }
@@ -91,16 +90,18 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$user->id,
-                'password' => 'required|min:6',
+                'password' => 'nullable|min:6',
             ]);
             if ($validator->fails()) {
                 return Utility::validationResponse($validator);
             }
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = bcrypt($request->password);
+            if ($request->has('password') && $request->password != ''){
+                $user->password = bcrypt($request->password);
+            }
             $user->save();
-            return Utility::successResponse('User Updated Successfully', $user);
+            return Utility::successResponse($request->name.'\'s Information Updated Successfully!', $user);
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
         }

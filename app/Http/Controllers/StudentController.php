@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Utility;
+use App\Models\Attendance;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,7 +40,16 @@ class StudentController extends Controller
     {
         try {
             $students = Student::query()->paginate(10);
-            return Utility::successResponse('Students List', $students);
+            $students->map(function ($student) {
+                $attendance = Attendance::getAttendance($student->id);
+                if ($attendance){
+                    $student->attendance_status = $attendance->status;
+                } else {
+                    $student->attendance_status = null;
+                }
+            });
+
+            return Utility::successResponse('Students List', $students,200, Utility::getPagination($students));
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
         }

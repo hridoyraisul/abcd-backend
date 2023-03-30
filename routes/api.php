@@ -39,13 +39,13 @@ Route::post('userLogin', [UserController::class, 'userLogin']);
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
     Route::post('createStudent', [StudentController::class, 'createStudent']);
     Route::get('allStudents', [StudentController::class, 'allStudents']);
     Route::get('getStudent/{student}', [StudentController::class, 'getStudent']);
-    Route::post('updateStudent/{student}', [StudentController::class, 'updateStudent']);
-    Route::get('deleteStudent/{student}', [StudentController::class, 'deleteStudent']);
-});
+    Route::put('updateStudent/{student}', [StudentController::class, 'updateStudent']);
+    Route::delete('deleteStudent/{student}', [StudentController::class, 'deleteStudent']);
+//});
 
 
 /*
@@ -57,8 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
     Route::post('createAttendance', [AttendanceController::class, 'createAttendance']);
     Route::get('currentMonthAttendances', [AttendanceController::class, 'currentMonthAttendances']);
     Route::get('studentAttendance/{student}', [AttendanceController::class, 'studentAttendance']);
-});
+//});
