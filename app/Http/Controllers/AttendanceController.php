@@ -42,7 +42,10 @@ class AttendanceController extends Controller
     public function currentMonthAttendances(Request $request)
     {
         try {
-            $attendances = Attendance::query()->whereMonth('created_at', date('m'))->paginate(10);
+            $attendances = Attendance::query()
+                ->whereYear('created_at', date('Y'))
+                ->whereMonth('created_at', date('m'))
+                ->paginate(10);
             return Utility::successResponse('Attendances List', $attendances);
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);

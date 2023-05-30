@@ -15,15 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('allUsers', [UserController::class, 'allUsers']);
-Route::delete('deleteUser/{user}', [UserController::class, 'deleteUser']);
-Route::put('updateUser/{user}', [UserController::class, 'updateUser']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
-//    Route::get('allUsers', [UserController::class, 'allUsers']);
+
+    Route::get('allUsers', [UserController::class, 'allUsers']);
+    Route::delete('deleteUser/{user}', [UserController::class, 'deleteUser']);
+    Route::put('updateUser/{user}', [UserController::class, 'updateUser']);
     Route::post('userLogout', [UserController::class, 'userLogout']);
 });
 Route::post('userRegister', [UserController::class, 'userRegister']);
@@ -39,13 +40,13 @@ Route::post('userLogin', [UserController::class, 'userLogin']);
 |
 */
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('createStudent', [StudentController::class, 'createStudent']);
     Route::get('allStudents', [StudentController::class, 'allStudents']);
     Route::get('getStudent/{student}', [StudentController::class, 'getStudent']);
     Route::put('updateStudent/{student}', [StudentController::class, 'updateStudent']);
     Route::delete('deleteStudent/{student}', [StudentController::class, 'deleteStudent']);
-//});
+});
 
 
 /*
@@ -57,8 +58,8 @@ Route::post('userLogin', [UserController::class, 'userLogin']);
 |
 */
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('createAttendance', [AttendanceController::class, 'createAttendance']);
     Route::get('currentMonthAttendances', [AttendanceController::class, 'currentMonthAttendances']);
     Route::get('studentAttendance/{student}', [AttendanceController::class, 'studentAttendance']);
-//});
+});

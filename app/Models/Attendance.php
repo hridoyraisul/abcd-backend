@@ -29,7 +29,7 @@ class Attendance extends Model
     {
         return Attendance::query()
             ->where('student_id', $student_id)
-            ->whereDay('created_at', date('d'))
+            ->where('created_at', date('Y-m-d'))
             ->exists();
     }
     public static function checkAttendanceByDate($student_id, $date): bool
@@ -43,7 +43,7 @@ class Attendance extends Model
     {
         return Attendance::query()
             ->where('student_id', $student_id)
-            ->whereDay('created_at', date('d'))
+            ->where('created_at', date('Y-m-d'))
             ->first();
     }
 }
