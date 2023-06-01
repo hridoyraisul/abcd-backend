@@ -24,11 +24,7 @@ class AttendanceController extends Controller
             if (Attendance::checkAttendance($request->student_id)) {
                 return Utility::errorResponse('Attendance Already Set');
             }
-            $attendance = new Attendance();
-            $attendance->student_id = $request->student_id;
-            $attendance->user_id = $request->user_id;
-            $attendance->status = $request->status;
-            $attendance->save();
+            $attendance = Attendance::create($request->only('student_id', 'user_id', 'status'));
             if ($request->status == 1){
                 return Utility::successResponse('Attendance Set Present', $attendance);
             } else{

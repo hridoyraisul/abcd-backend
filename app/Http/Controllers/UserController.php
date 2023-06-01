@@ -37,8 +37,8 @@ class UserController extends Controller
     public function userLogout(Request $request)
     {
         try {
-            $request->user()->token()->revoke();
-            return Utility::successResponse('User Logout Successfully');
+            $request->user()->currentAccessToken()->delete();
+            return Utility::successResponse('Logout Successfully');
         } catch (\Exception $e) {
             return Utility::exceptionResponse($e);
         }

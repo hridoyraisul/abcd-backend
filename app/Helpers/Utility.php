@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class Utility
@@ -18,8 +17,10 @@ class Utility
     public static function exceptionResponse(\Exception $exception): \Illuminate\Http\JsonResponse
     {
         return response()->json([
-            'message' => $exception->getMessage().' in line '.$exception->getLine().' in file '.$exception->getFile(),
-            'data' => null,
+            'message' => app()->environment('local')
+                ? $exception->getMessage().' in line '.$exception->getLine().' in file '.$exception->getFile()
+                : 'Something went wrong, please try again later!',
+            'data' => $exception->getTrace(),
         ], 400);
     }
 
@@ -31,7 +32,7 @@ class Utility
         ], 400);
     }
 
-    public static function errorResponse($message = ''): \Illuminate\Http\JsonResponse
+    public static function errorResponse(string $message = ''): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'message' => $message,

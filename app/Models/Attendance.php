@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Attendance extends Model
 {
@@ -29,7 +30,8 @@ class Attendance extends Model
     {
         return Attendance::query()
             ->where('student_id', $student_id)
-            ->where('created_at', date('Y-m-d'))
+            ->whereMonth('created_at', date('m'))
+            ->whereDate('created_at', date('d'))
             ->exists();
     }
     public static function checkAttendanceByDate($student_id, $date): bool
@@ -43,7 +45,8 @@ class Attendance extends Model
     {
         return Attendance::query()
             ->where('student_id', $student_id)
-            ->where('created_at', date('Y-m-d'))
+            ->whereMonth('created_at', date('m'))
+            ->whereDate('created_at', date('d'))
             ->first();
     }
 }
